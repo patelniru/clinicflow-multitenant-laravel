@@ -1,0 +1,3 @@
+<?php
+namespace Database\Seeders;use App\Models\Permission;use Illuminate\Database\Seeder;
+class PermissionSeeder extends Seeder {public function run():void{foreach(['patients'=>['view','create','update','delete'],'consultants'=>['view','create','update','delete'],'appointments'=>['view','create','update','update_status','cancel'],'documents'=>['view','create','delete'],'reports'=>['view'],'audit_logs'=>['view']] as $module=>$actions){foreach($actions as $action){Permission::updateOrCreate(['slug'=>"$module.$action"],['name'=>ucfirst($action).' '.ucfirst($module),'module'=>$module,'description'=>"Allows $action action in $module module."]);}}}}

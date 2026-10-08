@@ -1,0 +1,3 @@
+<?php
+namespace Database\Factories;use App\Enums\DocumentVisibility;use App\Models\Company;use App\Models\Document;use App\Models\Patient;use App\Models\User;use Illuminate\Database\Eloquent\Factories\Factory;
+class DocumentFactory extends Factory {protected $model=Document::class;public function definition():array{return ['company_id'=>Company::factory(),'patient_id'=>Patient::factory(),'uploaded_by'=>User::factory(),'file_name'=>'sample.pdf','original_name'=>'sample.pdf','file_path'=>'documents/demo/sample.pdf','mime_type'=>'application/pdf','file_size'=>1024,'visibility'=>DocumentVisibility::MANAGER_ONLY];}}

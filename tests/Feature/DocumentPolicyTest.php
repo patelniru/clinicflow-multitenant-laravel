@@ -1,0 +1,4 @@
+<?php
+namespace Tests\Feature;
+use App\Enums\DocumentVisibility;use App\Enums\UserRole;use App\Models\Company;use App\Models\Document;use App\Models\Patient;use App\Models\User;use Illuminate\Foundation\Testing\RefreshDatabase;use Tests\TestCase;
+class DocumentPolicyTest extends TestCase {use RefreshDatabase;public function test_patient_can_only_view_own_patient_visible_document():void{$company=Company::factory()->create();$patientUser=User::factory()->create(['company_id'=>$company->id,'role'=>UserRole::PATIENT]);$patient=Patient::factory()->create(['company_id'=>$company->id,'user_id'=>$patientUser->id]);$document=Document::factory()->create(['company_id'=>$company->id,'patient_id'=>$patient->id,'visibility'=>DocumentVisibility::PATIENT_VISIBLE]);$this->assertTrue($patientUser->can('view',$document));}}

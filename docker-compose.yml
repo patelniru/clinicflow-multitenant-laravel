@@ -1,0 +1,28 @@
+services:
+  app:
+    build: { context: ., dockerfile: Dockerfile }
+    volumes: [ ./:/var/www ]
+    depends_on:
+      db: { condition: service_healthy }
+  nginx:
+    image: nginx:1.27-alpine
+    ports: [ "8080:80" ]
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [ app ]
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: clinicflow
+      MYSQL_USER: clinicflow
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    ports: [ "3307:3306" ]
+    volumes: [ mysql_data:/var/lib/mysql ]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootsecret"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes: { mysql_data: {} }
