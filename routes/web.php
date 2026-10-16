@@ -10,6 +10,7 @@ use App\Http\Controllers\App\AuditLogController;
 use App\Http\Controllers\App\ConsultantController;
 use App\Http\Controllers\App\ConsultantPermissionController;
 use App\Http\Controllers\App\DocumentController;
+use App\Http\Controllers\AppointmentCalendarController;
 use App\Http\Controllers\App\PatientController;
 use App\Http\Controllers\App\ReportController;
 use App\Http\Controllers\Patient\PatientAppointmentController;
@@ -35,6 +36,16 @@ Route::middleware('auth')->group(function () {
         Route::resource('consultants', ConsultantController::class)->except(['show', 'destroy'])->middleware('company.access');
         Route::get('consultants/{consultant}/permissions', [ConsultantPermissionController::class, 'edit'])->middleware('role:manager')->name('consultants.permissions.edit');
         Route::put('consultants/{consultant}/permissions', [ConsultantPermissionController::class, 'update'])->middleware('role:manager')->name('consultants.permissions.update');
+        // Appointment calendar
+        Route::get('appointments/calendar', [AppointmentCalendarController::class, 'index'])
+        ->middleware('permission:appointments.view')
+        ->name('appointments.calendar');
+
+        // Download single appointment as .ics
+        Route::get('appointments/{appointment}/ics', [AppointmentCalendarController::class, 'ics'])
+        ->middleware('permission:appointments.view')
+        ->name('appointments.ics');
+
         Route::get('appointments', [AppointmentController::class, 'index'])->middleware('permission:appointments.view')->name('appointments.index');
         Route::get('appointments/create', [AppointmentController::class, 'create'])->middleware('permission:appointments.create')->name('appointments.create');
         Route::post('appointments', [AppointmentController::class, 'store'])->middleware('permission:appointments.create')->name('appointments.store');
@@ -43,13 +54,23 @@ Route::middleware('auth')->group(function () {
         Route::get('reports/appointments', [ReportController::class, 'appointments'])->middleware('permission:reports.view')->name('reports.appointments');
         Route::get('reports/appointments/export', [ReportController::class, 'exportAppointments'])->middleware('permission:reports.view')->name('reports.appointments.export');
         Route::get('audit-logs', [AuditLogController::class, 'index'])->middleware('permission:audit_logs.view')->name('audit-logs.index');
+       
     });
     Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(function () {
         Route::view('/dashboard', 'patient.dashboard')->name('dashboard');
+        // Patient appointment calendar
+        Route::get('appointments/calendar', [AppointmentCalendarController::class, 'index'])
+        ->name('appointments.calendar');
+
+        // Download own appointment as .ics
+        Route::get('appointments/{appointment}/ics', [AppointmentCalendarController::class, 'ics'])
+        ->name('appointments.ics');
+        
         Route::get('/appointments', [PatientAppointmentController::class, 'index'])->name('appointments.index');
         Route::get('/appointments/{appointment}', [PatientAppointmentController::class, 'show'])->name('appointments.show');
         Route::get('/documents', [PatientDocumentController::class, 'index'])->name('documents.index');
         Route::get('/documents/{document}/download', [PatientDocumentController::class, 'download'])->name('documents.download');
+        
     });
 });
 

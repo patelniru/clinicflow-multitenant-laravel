@@ -81,6 +81,12 @@
                             Appointments
                         </x-nav-link>
                         <x-nav-link
+                            :href="route('app.appointments.calendar')"
+                            :active="request()->routeIs('app.appointments.calendar')"
+                        >
+                            Calendar
+                        </x-nav-link>
+                        <x-nav-link
                             :href="route('app.reports.appointments')"
                             :active="request()->routeIs('app.reports.*')"
                         >
@@ -105,7 +111,12 @@
                         >
                             My Appointments
                         </x-nav-link>
-
+                        <x-nav-link
+                        :href="route('app.appointments.calendar')"
+                        :active="request()->routeIs('app.appointments.calendar')"
+                    >
+                        Calendar
+                    </x-nav-link>
                         <x-nav-link
                             :href="route('app.patients.index')"
                             :active="request()->routeIs('app.patients.*')"
@@ -124,7 +135,13 @@
                         >
                             My Appointments
                         </x-nav-link>
-
+                        
+                        <x-nav-link
+                            :href="route('patient.appointments.calendar')"
+                            :active="request()->routeIs('patient.appointments.calendar')"
+                        >
+                            Calendar
+                        </x-nav-link>
                         <x-nav-link
                             :href="route('patient.documents.index')"
                             :active="request()->routeIs('patient.documents.*')"
@@ -255,7 +272,25 @@
                 >
                     Appointments
                 </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route('app.appointments.calendar')"
+                    :active="request()->routeIs('app.appointments.calendar')"
+                >
+                    Calendar
+                </x-responsive-nav-link>
+                <x-responsive-nav-link
+                    :href="route('app.reports.appointments')"
+                    :active="request()->routeIs('app.reports.*')"
+                >
+                    Reports
+                </x-responsive-nav-link>
 
+                <x-responsive-nav-link
+                    :href="route('app.audit-logs.index')"
+                    :active="request()->routeIs('app.audit-logs.*')"
+                >
+                    Audit Logs
+                </x-responsive-nav-link>
             @endif
 
             @if($role === 'consultant')
@@ -266,7 +301,12 @@
                 >
                     My Appointments
                 </x-responsive-nav-link>
-
+                <x-responsive-nav-link
+                    :href="route('app.appointments.calendar')"
+                    :active="request()->routeIs('app.appointments.calendar')"
+                >
+                    Calendar
+                </x-responsive-nav-link>
                 <x-responsive-nav-link
                     :href="route('app.patients.index')"
                     :active="request()->routeIs('app.patients.*')"
@@ -284,7 +324,12 @@
                 >
                     My Appointments
                 </x-responsive-nav-link>
-
+                <x-responsive-nav-link
+                    :href="route('patient.appointments.calendar')"
+                    :active="request()->routeIs('patient.appointments.*')"
+                >
+                    Calendar
+                </x-responsive-nav-link>
             @endif
 
         </div>
